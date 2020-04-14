@@ -6,8 +6,8 @@ var ball;
 var plays = [];
 
 function setup(){
-  createCanvas(1366, 595);
-  ball = new Ball();
+  createCanvas(1366, 595);  //create game window
+  ball = new Ball(); 
   plays.push(new Play());
 }
 
@@ -22,7 +22,7 @@ function draw() {
   }
   ball.show();
   ball.update();
-  for (i = 0; i < touches.length; i++) {
+  for (i = 0; i < touches.length; i++) {  //for touchscreen mobiles
     if(touches[i].x > 683){
       y2 = touches[i].y - 100;
     }  
@@ -39,6 +39,7 @@ function draw() {
   }
 }
 
+//playing in keyboard
 function keyPressed(){
   if(key == 'w'){
     y -= 20;
@@ -72,7 +73,7 @@ function keyReleased(){
 function touchMoved() {
   return false;
 }
-
+//to start a game
 function mousePressed(){
   if(mouseX>643 && mouseX<723 && mouseY>332 && mouseY<368){
     ball.xdir = random(-1,2);
@@ -83,7 +84,7 @@ function mousePressed(){
   }
 }
 
-
+//creating ball object
 function Ball(){
   this.x = width/2;
   this.y = height/2 - 15;
@@ -110,8 +111,10 @@ function Ball(){
   };
   
   this.update = function(){
-    this.y += this.speed * this.ydir * this.yconst;
+    this.y += this.speed * this.ydir * this.yconst;  //to move the ball
     this.x += this.speed * this.xdir * this.xconst;
+    
+    //boundary conditions of the ball
     if(this.x < x+15+this.r/2 && this.x > x+this.r/2 && this.y > y-this.r/2 && this.y < y+140+this.r/2){
       this.xdir *= -1;
     }
@@ -134,13 +137,13 @@ function Ball(){
       this.ydir = 1;
     }
     
-    if(this.x > width-this.r/2){
+    if(this.x > width-this.r/2){  //if player2 loses ball
       this.sc1 += 1;
       background(255);
       this.x = width/2;
       this.y = height/2;
     }
-    if(this.x < this.r/2){
+    if(this.x < this.r/2){   //if player1 loses ball
       background(255);
       this.sc2 += 1;
       this.x = width/2;
@@ -148,7 +151,7 @@ function Ball(){
     }
   };
 }
-
+//play object to display initial gamecover
 function Play(){
   this.display = function(){
     textSize(50);
