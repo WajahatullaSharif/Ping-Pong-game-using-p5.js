@@ -83,6 +83,79 @@ function mousePressed(){
     plays.splice(0,1);
   }
 }
+//play using gamepad(xbox controller)
+var start;
+var rAF = window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.requestAnimationFrame;
+
+var rAFStop = window.mozCancelRequestAnimationFrame ||
+  window.webkitCancelRequestAnimationFrame ||
+  window.cancelRequestAnimationFrame;
+
+window.addEventListener("gamepadconnected", function() {
+  var gp = navigator.getGamepads()[0];
+  //gamepadInfo.innerHTML = "Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.";
+
+  gameLoop();
+});
+
+window.addEventListener("gamepaddisconnected", function() {
+  //gamepadInfo.innerHTML = "Waiting for gamepad.";
+
+  rAFStop(start);
+});
+
+if(!('GamepadEvent' in window)) {
+  // No gamepad events available, poll instead.
+  var interval = setInterval(pollGamepads, 500);
+}
+
+function pollGamepads() {
+  var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+  for (var i = 0; i < gamepads.length; i++) {
+    var gp = gamepads[i];
+    if(gp) {
+      //gamepadInfo.innerHTML = "Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.";
+      gameLoop();
+      clearInterval(interval);
+    }
+  }
+}
+
+function buttonPressed(b) {
+  if (typeof(b) == "object") {
+    return b.pressed;
+  }
+  return b == 1.0;
+}
+
+function gameLoop() {
+  var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+  if (!gamepads){
+    return;}
+
+  var gp = gamepads[0];
+  if (buttonPressed(gp.buttons[13])||gp.axes[1]>0.5) {
+    y+=10;
+  } else if (buttonPressed(gp.buttons[12])||gp.axes[1]<-0.5) {
+    y-=10;
+  }
+  if(buttonPressed(gp.buttons[0])||gp.axes[3]>0.5) {
+    y2+=10;
+  } else if(buttonPressed(gp.buttons[3])||gp.axes[3]<-0.5) {
+    y2-=10;
+  }
+  if(buttonPressed(gp.buttons[9])){
+    ball.xdir = random(-1,2);
+    ball.ydir = random(-1,2);
+    ball.xconst = 1/abs(ball.xdir);
+    ball.yconst = 1/abs(ball.ydir);
+    plays.splice(0,1);
+  }
+  var start = rAF(gameLoop);
+}
+
 
 //creating ball object
 function Ball(){
