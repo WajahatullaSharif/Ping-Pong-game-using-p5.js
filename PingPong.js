@@ -1,3 +1,7 @@
+var backsong;
+var hit;
+var hit2;
+var miss;
 var x = 200;
 var y = 250;
 var x2 = 1166;
@@ -7,6 +11,11 @@ var plays = [];
 
 function setup(){
   createCanvas(1366, 595);  //create game window
+  backsong = loadSound("boss_theme.wav");
+  backsong.setVolume(2);
+  hit = loadSound("breviceps__wet-click.wav");
+  hit2 = loadSound("moogy73__click02.wav");
+  miss = loadSound("gusgus26__click-05.wav");
   ball = new Ball(); 
   plays.push(new Play());
 }
@@ -30,12 +39,14 @@ function draw() {
       y = touches[i].y - 100;
     }
     if(touches[i].x>643 && touches[i].x<723 &&touches[i].y>34 && touches[i].y<69){
-    ball.xdir = random(-1,2);
-    ball.ydir = random(-1,2);
-    ball.xconst = 1/abs(ball.xdir);
-    ball.yconst = 1/abs(ball.ydir);
-    plays.splice(0,1);
-  }
+      backsong.rate(1.1);
+      backsong.play();
+      ball.xdir = random(-1,2);
+      ball.ydir = random(-1,2);
+      ball.xconst = 1/abs(ball.xdir);
+      ball.yconst = 1/abs(ball.ydir);
+      plays.splice(0,1);
+    }
   }
 }
 
@@ -76,6 +87,8 @@ function touchMoved() {
 //to start a game
 function mousePressed(){
   if(mouseX>643 && mouseX<723 && mouseY>332 && mouseY<368){
+    backsong.rate(1.1);
+    backsong.play();
     ball.xdir = random(-1,2);
     ball.ydir = random(-1,2);
     ball.xconst = 1/abs(ball.xdir);
@@ -147,6 +160,8 @@ function gameLoop() {
     y2-=10;
   }
   if(buttonPressed(gp.buttons[9])){
+    backsong.rate(1.1);
+    backsong.play();
     ball.xdir = random(-1,2);
     ball.ydir = random(-1,2);
     ball.xconst = 1/abs(ball.xdir);
@@ -184,18 +199,22 @@ function Ball(){
   };
   
   this.update = function(){
+    hit.rate(0.6);
     this.y += this.speed * this.ydir * this.yconst;  //to move the ball
     this.x += this.speed * this.xdir * this.xconst;
     
     //boundary conditions of the ball
     if(this.x < x+15+this.r/2 && this.x > x+this.r/2 && this.y > y-this.r/2 && this.y < y+140+this.r/2){
       this.xdir *= -1;
+      hit.play();
     }
     if(this.y < this.r/2 || this.y > height-this.r/2){
       this.ydir *= -1;
+       hit2.play();
     }
     if(this.x > x2-this.r/2 && this.x < x2+15-this.r/2 && this.y > y2-this.r/2 && this.y < y2+140+this.r/2){
       this.xdir *= -1;
+      hit.play();
     }
     if(this.y > y && this.y < y+40 && this.x < x+15+this.r/2 && this.x > x+this.r/2){
       this.ydir = -1;
@@ -211,12 +230,14 @@ function Ball(){
     }
     
     if(this.x > width-this.r/2){  //if player2 loses ball
+      miss.play();
       this.sc1 += 1;
       background(255);
       this.x = width/2;
       this.y = height/2;
     }
     if(this.x < this.r/2){   //if player1 loses ball
+      miss.play();
       background(255);
       this.sc2 += 1;
       this.x = width/2;
