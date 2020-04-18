@@ -60,10 +60,10 @@ function draw() {
   ball.show();
   ball.update();
   for (i = 0; i < touches.length; i++) {  //for touchscreen mobiles
-    if(touches[i].x > 683){
+    if(touches[i].x > 683 && y2 > 0 && y2 < height-140){
       y2 = touches[i].y - 100;
     }  
-    else if(touches[i].x < 683){
+    else if(touches[i].x < 683 && y > 0 && y < height-140){
       y = touches[i].y - 100;
     }
   }
