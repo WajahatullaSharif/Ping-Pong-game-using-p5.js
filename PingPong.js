@@ -11,13 +11,40 @@ var plays = [];
 
 function setup(){
   createCanvas(1366, 595);  //create game window
-  backsong = loadSound("boss_theme.wav");
-  backsong.setVolume(2);
-  hit = loadSound("breviceps__wet-click.wav");
-  hit2 = loadSound("moogy73__click02.wav");
-  miss = loadSound("gusgus26__click-05.wav");
+  backsong = loadSound("audio/FunkSoul.wav",loaded);
+  backsong.playMode('restart');
+  backsong.setVolume(0.5);
+  hit = loadSound("audio/breviceps__wet-click.wav");
+  hit2 = loadSound("audio/moogy73__click02.wav");
+  miss = loadSound("audio/gusgus26__click-05.wav");
   ball = new Ball(); 
   plays.push(new Play());
+}
+
+function loaded(){
+    Button = createButton('START');
+    Button.position(630, 330);
+    Button.size(100, 30);
+    Button.mousePressed(starts);
+}
+
+function starts(){
+  Button.remove();
+  backsong.rate(1.1);
+  backsong.play();
+  ball.xdir = random(-1,1);
+  ball.ydir = random(-1,1);
+  if(ball.xdir > 0){
+    ball.xdir = 1;
+  }else{ 
+    ball.xdir = -1;
+  }
+  if(ball.ydir > 0){
+    ball.ydir = 1;
+  }else{
+    ball.ydir = -1;
+  }
+  plays.splice(0,1);
 }
 
 function draw() {
@@ -38,15 +65,11 @@ function draw() {
     else if(touches[i].x < 683){
       y = touches[i].y - 100;
     }
-    if(touches[i].x>643 && touches[i].x<723 &&touches[i].y>34 && touches[i].y<69){
-      backsong.rate(1.1);
-      backsong.play();
-      ball.xdir = random(-1,2);
-      ball.ydir = random(-1,2);
-      ball.xconst = 1/abs(ball.xdir);
-      ball.yconst = 1/abs(ball.ydir);
-      plays.splice(0,1);
-    }
+  }
+  if(backsong.isLoaded()){
+      if(int(backsong.currentTime()) == int(backsong.duration())-1){
+        backsong.play();
+      }
   }
 }
 
@@ -84,18 +107,7 @@ function keyReleased(){
 function touchMoved() {
   return false;
 }
-//to start a game
-function mousePressed(){
-  if(mouseX>643 && mouseX<723 && mouseY>332 && mouseY<368){
-    backsong.rate(1.1);
-    backsong.play();
-    ball.xdir = random(-1,2);
-    ball.ydir = random(-1,2);
-    ball.xconst = 1/abs(ball.xdir);
-    ball.yconst = 1/abs(ball.ydir);
-    plays.splice(0,1);
-  }
-}
+
 //play using gamepad(xbox controller)
 var start;
 var rAF = window.mozRequestAnimationFrame ||
@@ -148,27 +160,34 @@ function gameLoop() {
   if (!gamepads){
     return;}
 
-  var gp = gamepads[0];
-  if (buttonPressed(gp.buttons[13])||gp.axes[1]>0.5) {
-    y+=10;
-  } else if (buttonPressed(gp.buttons[12])||gp.axes[1]<-0.5) {
-    y-=10;
+  if(gamepads[0]){
+    var gp = gamepads[0];
+      if (buttonPressed(gp.buttons[13]) || gp.axes[1] > 0.5) {
+        if(y < height-140){
+          y+=5;
+        }
+      } else if (buttonPressed(gp.buttons[12]) || gp.axes[1] < -0.5) {
+        if(y > 0){
+          y-=5;
+        }
+      }
+      if(buttonPressed(gp.buttons[9])){
+        starts();
+      }
   }
-  if(buttonPressed(gp.buttons[0])||gp.axes[3]>0.5) {
-    y2+=10;
-  } else if(buttonPressed(gp.buttons[3])||gp.axes[3]<-0.5) {
-    y2-=10;
+  if(gamepads[1]){
+    gp = gamepads[1];
+      if(buttonPressed(gp.buttons[0]) || gp.axes[3] > 0.5) {
+        if(y2 < height-140){
+          y2+=5;
+        }
+      } else if(buttonPressed(gp.buttons[3]) || gp.axes[3] < -0.5) {
+        if(y2 > 0){
+          y2-=5;
+        }
+      }
   }
-  if(buttonPressed(gp.buttons[9])){
-    backsong.rate(1.1);
-    backsong.play();
-    ball.xdir = random(-1,2);
-    ball.ydir = random(-1,2);
-    ball.xconst = 1/abs(ball.xdir);
-    ball.yconst = 1/abs(ball.ydir);
-    plays.splice(0,1);
-  }
-  var start = rAF(gameLoop);
+  start = rAF(gameLoop);
 }
 
 
@@ -182,8 +201,7 @@ function Ball(){
   this.ydir = 0;
   this.sc1 = 0;
   this.sc2 = 0;
-  this.xconst = 0;
-  this.yconst = 0;
+  this.count = 0;
   
   this.show = function(){
     fill(0, 255, 0);
@@ -191,21 +209,22 @@ function Ball(){
     circle(this.x, this.y, this.r);
     textSize(25);
     fill(255, 0, 0);
-    text("Score: ", 200, 50);
-    text(this.sc1, 280, 50);
+    text("Score: ", 250, 50);
+    text(this.sc1, 330, 50);
     fill(0, 0, 255);
-    text("Score: ", 1100, 50);
-    text(this.sc2, 1180, 50);
+    text("Score: ", 1050, 50);
+    text(this.sc2, 1130, 50);
   };
   
   this.update = function(){
     hit.rate(0.6);
-    this.y += this.speed * this.ydir * this.yconst;  //to move the ball
-    this.x += this.speed * this.xdir * this.xconst;
+    this.y += this.speed * this.ydir;  //to move the ball
+    this.x += this.speed * this.xdir;
     
     //boundary conditions of the ball
     if(this.x < x+15+this.r/2 && this.x > x+this.r/2 && this.y > y-this.r/2 && this.y < y+140+this.r/2){
-      this.xdir *= -1;
+      this.xdir = -1;
+      this.count++;
       hit.play();
     }
     if(this.y < this.r/2 || this.y > height-this.r/2){
@@ -213,7 +232,8 @@ function Ball(){
        hit2.play();
     }
     if(this.x > x2-this.r/2 && this.x < x2+15-this.r/2 && this.y > y2-this.r/2 && this.y < y2+140+this.r/2){
-      this.xdir *= -1;
+      this.xdir = -1;
+      this.count++;
       hit.play();
     }
     if(this.y > y && this.y < y+40 && this.x < x+15+this.r/2 && this.x > x+this.r/2){
@@ -235,6 +255,8 @@ function Ball(){
       background(255);
       this.x = width/2;
       this.y = height/2;
+      this.count = 0;
+      this.speed = 5;
     }
     if(this.x < this.r/2){   //if player1 loses ball
       miss.play();
@@ -242,6 +264,14 @@ function Ball(){
       this.sc2 += 1;
       this.x = width/2;
       this.y = height/2;
+      this.count = 0;
+      this.speed = 5;
+    }
+    let m = map(this.speed, 5, 15, 1, 1.5);
+    backsong.rate(m);
+    if(this.count > 3){
+      this.count = 0;
+      this.speed++;
     }
   };
 }
@@ -258,11 +288,5 @@ function Play(){
     rect(683, 250, 200, 60);
     fill('blue');
     text("PONG", 713, 298);
-    fill('yellow');
-    ellipse(683, 350, 80, 35);
-    textSize(15);
-    fill(0);
-    textStyle(BOLD);
-    text("PLAY !", 660, 358);
   };
 }
