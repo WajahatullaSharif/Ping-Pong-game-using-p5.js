@@ -2,6 +2,7 @@ var backsong;
 var hit;
 var hit2;
 var miss;
+var Button;
 var x = 200;
 var y = 250;
 var x2 = 1166;
