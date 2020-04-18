@@ -75,34 +75,22 @@ function draw() {
 }
 
 //playing in keyboard
-function keyPressed(){
-  if(key == 'w'){
-    y -= 20;
-  }
-  else if(key == 's'){
-    y += 20;
-  }
-  else if(key == '8'){
-    y2 -= 20;
-  }
-  else if(key == '2'){
-    y2 += 20;
-  }
-}
-
-function keyReleased(){
-  if(key == 'w'){
-    y -= 20;
-  }
-  else if(key == 's'){
-    y += 20;
-  }
-  else if(key == '8'){
-    y2 -= 20;
-  }
-  else if(key == '2'){
-    y2 += 20;
-  }
+function keypad(){
+   if(keyIsDown(87) && y > 0){ //key W
+     y -= 10;
+   }
+   else if(keyIsDown(83) && y < height-140){ //key S
+     y += 10;
+   }
+   if(keyIsDown(104) && y2 > 0){ //key NUMPAD 8
+     y2 -= 10;
+   }
+   else if(keyIsDown(98) && y2 < height-140){ //key NUMPAD 2
+     y2 += 10;
+   }
+   if(keyIsDown(13)){
+     starts();
+   }
 }
 
 function touchMoved() {
@@ -197,7 +185,7 @@ function Ball(){
   this.x = width/2;
   this.y = height/2 - 15;
   this.r = 20;
-  this.speed = 10;
+  this.speed = 5;
   this.xdir = 0;
   this.ydir = 0;
   this.sc1 = 0;
@@ -224,7 +212,7 @@ function Ball(){
     
     //boundary conditions of the ball
     if(this.x < x+15+this.r/2 && this.x > x+this.r/2 && this.y > y-this.r/2 && this.y < y+140+this.r/2){
-      this.xdir = -1;
+      this.xdir = 1;
       this.count++;
       hit.play();
     }
