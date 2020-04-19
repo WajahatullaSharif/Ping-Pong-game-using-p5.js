@@ -60,11 +60,27 @@ function draw() {
   ball.show();
   ball.update();
   for (i = 0; i < touches.length; i++) {  //for touchscreen mobiles
-    if(touches[i].x > 683 && y2 > 0 && y2 < height-140){
-      y2 = touches[i].y - 100;
-    }  
-    else if(touches[i].x < 683 && y > 0 && y < height-140){
-      y = touches[i].y - 100;
+    if(touches[i].x > 683){
+      if(touches[i].y < 70){
+        y2 = 0;
+      }
+      else if(touches[i].y > height-70){
+        y2 = height-140;
+      }
+      else if(y2 >= 0 && y2 <= height-140){
+        y2 = touches[i].y - 70;
+      }
+    }
+    else if(touches[i].x < 683){
+      if(touches[i].y < 70){
+        y = 0;
+      }
+      else if(touches[i].y > height-70){
+        y = height-140;
+      }
+      else if(y >= 0 && y <= height-140){
+        y = touches[i].y - 70;
+      }
     }
   }
   if(backsong.isLoaded()){
