@@ -1,0 +1,7 @@
+version 2.0 features
+
+1. Added single player mode with computer(AI).
+2. A whole new game menu with gamepad support.
+3. Added sound and music toggle buttons.
+4. Added dark mode/day mode.
+5. New scoreboard syle. 
