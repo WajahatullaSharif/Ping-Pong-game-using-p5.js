@@ -1,7 +1,8 @@
 Ping Pong v2.0
 
 Instructions are as follows:
-1.Press left and right arrow keys to switch between single or multiplayer using keyboard (can click on mouse) or left analog stick using gamepad.
-2.Press Enter to select or X in gamepad.
-3.You can toggle dark mode, mute sounds using mouse clicks or use left and right trigger buttons on gamepad.
-4.Enjoy!
+1. Press left and right arrow keys to switch between single or multiplayer using keyboard (can click on mouse) or left analog stick using gamepad.
+2. Press Enter to select or X in gamepad.
+3. Use 'W' and 'S' keys for player 1, NUM8 and NUM2 for player 2. Use left analog sticks on gamepads.
+4. You can toggle dark mode, mute sounds using mouse clicks or use left and right trigger buttons on gamepad.
+5. Enjoy!
