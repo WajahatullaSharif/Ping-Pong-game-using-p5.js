@@ -5,3 +5,4 @@ version 2.0 features
 3. Added sound and music toggle buttons.
 4. Added dark mode/day mode.
 5. New scoreboard syle. 
+6. Minor bug fixes.
