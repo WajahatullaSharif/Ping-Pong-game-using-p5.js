@@ -59,6 +59,7 @@ function draw() {
   }
   ball.show();
   ball.update();
+  keypad();
   for (i = 0; i < touches.length; i++) {  //for touchscreen mobiles
     if(touches[i].x > 683){
       if(touches[i].y < 70){
