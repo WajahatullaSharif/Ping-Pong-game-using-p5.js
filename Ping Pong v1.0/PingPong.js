@@ -12,12 +12,12 @@ var plays = [];
 
 function setup(){
   createCanvas(1366, 595);  //create game window
-  backsong = loadSound("audio/FunkSoul.wav",loaded);
+  backsong = loadSound("../audio/FunkSoul.wav",loaded);
   backsong.playMode('restart');
   backsong.setVolume(0.5);
-  hit = loadSound("audio/breviceps__wet-click.wav");
-  hit2 = loadSound("audio/moogy73__click02.wav");
-  miss = loadSound("audio/gusgus26__click-05.wav");
+  hit = loadSound("../audio/breviceps__wet-click.wav");
+  hit2 = loadSound("../audio/moogy73__click02.wav");
+  miss = loadSound("../audio/gusgus26__click-05.wav");
   ball = new Ball(); 
   plays.push(new Play());
 }
