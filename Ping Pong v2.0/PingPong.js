@@ -67,6 +67,9 @@ function mouseClicked(){
   else if(mouseX > 1300 && mouseX < 1350 && mouseY > 100 && mouseY < 150){
     sfxflag *= -1;
   }
+  else if(mouseX > 560 && mouseX < 800 && mouseY > 480 && mouseY < 550){
+    restart();
+  }
 }
 
 function starts(){
@@ -168,7 +171,7 @@ function draw() {
   }
   keypad();
   for (i = 0; i < touches.length; i++) {
-    if(touches[i].x > 683){
+    if(touches[i].x > 683 && vsflag == 0){
       if(touches[i].y < 10+70){
         y2 = 10;
       }
@@ -196,8 +199,8 @@ function draw() {
         backsong.play();
       }
     }
-    if(ball.sc2 == 1 || ball.sc1 == 10){
-      if(ball.sc2 == 1){
+    if(ball.sc2 == 5 || ball.sc1 == 5){
+      if(ball.sc2 == 5){
         if(dark == -1){
           fill(0);
         }else{
@@ -207,11 +210,21 @@ function draw() {
         textSize(100);
         text('you lose!',500, 200);
         text('better luck next time...', 280, 400);
-        textSize(30);
-        textFont('default');
-        fill('red');
-        text('Press Space or X', 560, 530);
+      }else if(ball.sc1 == 5){
+        if(dark == -1){
+          fill(0);
+        }else{
+          fill(255);
+        }
+        textFont(myfont);
+        textSize(100);
+        text('you win!',500, 200);
+        //text('better luck next time...', 280, 400);
       }
+      textSize(30);
+      textFont('default');
+      fill('red');
+      text('Press Space or X', 560, 530);
       backsong.stop();
       restartflag = 1;
       startclicked = 1;
