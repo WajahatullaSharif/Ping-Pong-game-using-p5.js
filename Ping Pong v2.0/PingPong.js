@@ -454,7 +454,7 @@ function Ball(){
         hit2.play();
       }
     }
-    if(this.x > x2-this.d/2 && this.x < x2+15-this.d/2 && this.y > y2-this.d/2 && this.d/2 < y2+140+this.d/2){
+    if(this.x > x2-this.d/2 && this.x < x2+15-this.d/2 && this.y > y2-this.d/2 && this.y < y2+140+this.d/2){
       this.xdir = -1;
       this.count++;
       this.fail++;
