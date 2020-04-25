@@ -466,13 +466,13 @@ function Ball(){
     if(this.y > y-this.d/2 && this.y < y+40 && this.x < x+15+this.d/2 && this.x > x+this.d/2){
       this.ydir = -1;
     }
-    if(this.y > y+100 && this.y < y+140+this.d/2 && this.x < x+15+this.r && this.x > x+this.r){
+    if(this.y > y+100 && this.y < y+140+this.d/2 && this.x < x+15+this.d/2 && this.x > x+this.d/2){
       this.ydir = 1;
     }
-    if(this.y > y2-this.d/2 && this.y < y2+40 && this.x > x2-this.r && this.x < x2+15-this.r){
+    if(this.y > y2-this.d/2 && this.y < y2+40 && this.x > x2-this.d/2 && this.x < x2+15-this.d/2){
       this.ydir = -1;
     }
-    if(this.y > y2+100 && this.y < y2+140+this.d/2 && this.x > x2-this.r && this.x < x2+15-this.r){
+    if(this.y > y2+100 && this.y < y2+140+this.d/2 && this.x > x2-this.d/2 && this.x < x2+15-this.d/2){
       this.ydir = 1;
     }
     
