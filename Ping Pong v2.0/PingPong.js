@@ -27,11 +27,10 @@ function setup(){
   vsbutton = loadImage('../icons/image.png',draw);
   music = loadImage('../icons/soundwhite.png');
   nomusic = loadImage('../icons/nosoundwhite.png');
-  sfx = loadImage('../icons/SFX.png');
-  nosfx = loadImage('../icons/noSFX.png');
+  //sfx = loadImage('../icons/SFX.png');
+  //nosfx = loadImage('../icons/noSFX.png');
   day = loadImage('../icons/day.png');
   night = loadImage('../icons/night.png');
-  lose = loadImage('../icons/hahayoulose.png');
   ball = new Ball();
   plays.push(new Play());
 }
@@ -56,17 +55,19 @@ function mouseClicked(){
     mute *= -1;
     if(mute == 1 && vsclicked == 1 && startclicked == 1){
       backsong.stop();
+      sfxflag = 1;
     }
     else if(mute == -1 && vsclicked == 1 && startclicked == 1){
      backsong.play();
+      sfxflag = -1;
     }
   }
   else if(mouseX > 1280 && mouseX < 1360 && mouseY > 20 && mouseY < 50){
     dark *= -1;
   }
-  else if(mouseX > 1300 && mouseX < 1350 && mouseY > 100 && mouseY < 150){
-    sfxflag *= -1;
-  }
+  //else if(mouseX > 1300 && mouseX < 1350 && mouseY > 100 && mouseY < 150){
+    //sfxflag *= -1;
+  //}
   else if(mouseX > 560 && mouseX < 800 && mouseY > 480 && mouseY < 550){
     restart();
   }
@@ -138,13 +139,13 @@ function draw() {
     tint(200, 0 , 0, 180);
     image(nomusic, 1300, 60, 50, 50);
   }
-  if(sfxflag == -1){
+  /*if(sfxflag == -1){
     tint(0, 153, 204, 126);
     image(sfx, 1300, 115, 50, 50);
   }else if(sfxflag == 1){
     tint('grey');
     image(nosfx, 1300, 115, 50, 50);
-  }
+  }*/
   for(var i=0; i<plays.length; i++){
     plays[i].display();
   }
