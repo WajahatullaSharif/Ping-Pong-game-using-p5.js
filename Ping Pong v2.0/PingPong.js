@@ -14,7 +14,7 @@ var startx = 80, starty = 40;
 var vsx = 100, vsy = 100;
 
 function setup(){
-  createCanvas(1366, 595);
+  createCanvas(document.body.clientWeight, document.body.clientHeight);
   myfont2 = loadFont("../fonts/ToetheLineless.ttf");
   myfont = loadFont("../fonts/SlimThinPixelettes.otf");
   backsong = loadSound("../audio/FunkSoul.wav", loaded);
