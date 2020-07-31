@@ -14,6 +14,9 @@ var startx = 80, starty = 40;
 var vsx = 100, vsy = 100;
 
 function setup(){
+  window.addEventListener("resize", function(event) {
+    console.log(document.body.clientWidth + ' wide by ' + document.body.clientHeight+' high');
+});
   createCanvas(document.body.clientWeight, document.body.clientHeight);
   myfont2 = loadFont("../fonts/ToetheLineless.ttf");
   myfont = loadFont("../fonts/SlimThinPixelettes.otf");
