@@ -18,7 +18,8 @@ function setup(){
   window.addEventListener("resize", function(event) {
     //console.log(document.body.clientWidth + ' wide by ' + document.body.clientHeight+' high');
 });
-  createCanvas(document.body.clientWidth, document.body.clientHeight);
+  //createCanvas(document.body.clientWidth, document.body.clientHeight);
+  createCanvas(windowWidth, windowHeight);
   myfont2 = loadFont("../fonts/ToetheLineless.ttf");
   myfont = loadFont("../fonts/SlimThinPixelettes.otf");
   backsong = loadSound("../audio/FunkSoul.wav", loaded);
