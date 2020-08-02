@@ -1,7 +1,7 @@
 var backsong, hit, hit2, miss;
-var vsflag = 0, restartflag = 0;
-var x = 200, y = 250;
-var x2 = 1166, y2 = 250;
+var vsflag = 0, restartflag = 0,startsflag=0;
+var x, y;
+var x2, y2=500;
 var ball, plays = [];
 var myfont, myfont2;
 let startbutton, vsbutton;
@@ -12,28 +12,30 @@ var sfxflag = -1;
 let music, nomusic, sfx, nosfx, day, night;
 var startx = 80, starty = 40;
 var vsx = 100, vsy = 100;
+var xp = 0.25, yp = 0.25;
 
 function setup(){
-  /*window.addEventListener("resize", function(event) {
-    console.log(document.body.clientWidth + ' wide by ' + document.body.clientHeight+' high');
-})*/
-  createCanvas(windowWidth, windowHeight);
-  myfont2 = loadFont("../fonts/ToetheLineless.ttf");
-  myfont = loadFont("../fonts/SlimThinPixelettes.otf");
-  backsong = loadSound("../audio/FunkSoul.wav", loaded);
+  window.addEventListener("resize", function(event) {
+    //console.log(document.body.clientWidth + ' wide by ' + document.body.clientHeight+' high');
+});
+  createCanvas(document.body.clientWidth, document.body.clientHeight);
+  myfont2 = loadFont("fonts/ToetheLineless.ttf");
+  myfont = loadFont("fonts/SlimThinPixelettes.otf");
+  backsong = loadSound("audio/FunkSoul.wav", loaded);
   backsong.playMode('restart');
   backsong.setVolume(0.5);
-  hit = loadSound("../audio/breviceps__wet-click.wav");
-  hit2 = loadSound("../audio/moogy73__click02.wav");
-  miss = loadSound("../audio/gusgus26__click-05.wav");
-  startbutton = loadImage('../icons/single.png',draw);
-  vsbutton = loadImage('../icons/image.png',draw);
-  music = loadImage('../icons/soundwhite.png');
-  nomusic = loadImage('../icons/nosoundwhite.png');
-  //sfx = loadImage('../icons/SFX.png');
-  //nosfx = loadImage('../icons/noSFX.png');
-  day = loadImage('../icons/day.png');
-  night = loadImage('../icons/night.png');
+  hit = loadSound("audio/breviceps__wet-click.wav");
+  hit2 = loadSound("audio/moogy73__click02.wav");
+  miss = loadSound("audio/gusgus26__click-05.wav");
+  startbutton = loadImage('icons/single.png',draw);
+  vsbutton = loadImage('icons/image.png',draw);
+  music = loadImage('icons/soundwhite.png');
+  nomusic = loadImage('icons/nosoundwhite.png');
+  //sfx = loadImage('icons/SFX.png');
+  //nosfx = loadImage('icons/noSFX.png');
+  day = loadImage('icons/day.png');
+  night = loadImage('icons/night.png');
+  //lose = loadImage('icons/hahayoulose.png');
   ball = new Ball();
   plays.push(new Play());
 }
@@ -41,39 +43,10 @@ function setup(){
 function loaded(){
   startclicked = 0;
   vsclicked = 0;
-}
-
-function mouseClicked(){
-  if(mouseX > 570 && mouseX < 650 && mouseY > 370 && mouseY < 410 && startclicked == 0){
-    startclicked = 1;
-    vsclicked = 1;
-    vsstarts();
-  }
-  else if(mouseX > 720 && mouseX < 820 && mouseY > 350 && mouseY < 450 && vsclicked == 0){
-    startclicked = 1;
-    vsclicked = 1;
-    starts();
-  }
-  else if(mouseX > 1300 && mouseX < 1350 && mouseY > 60 && mouseY < 110){
-    mute *= -1;
-    if(mute == 1 && vsclicked == 1 && startclicked == 1){
-      backsong.stop();
-      sfxflag = 1;
-    }
-    else if(mute == -1 && vsclicked == 1 && startclicked == 1){
-     backsong.play();
-      sfxflag = -1;
-    }
-  }
-  else if(mouseX > 1280 && mouseX < 1360 && mouseY > 20 && mouseY < 50){
-    dark *= -1;
-  }
-  //else if(mouseX > 1300 && mouseX < 1350 && mouseY > 100 && mouseY < 150){
-    //sfxflag *= -1;
-  //}
-  else if(mouseX > 560 && mouseX < 800 && mouseY > 480 && mouseY < 550){
-    restart();
-  }
+  x = 200; 
+  y = height/2 - 45;
+  x2 = width - 200; 
+  //y2 = height/2 - 45;
 }
 
 function starts(){
@@ -119,28 +92,30 @@ function vsstarts(){
 }
 
 function draw() {
+    var xx = xp*width;
+    var yy = yp*height;
   if(dark == 1){
     background(0);
     tint('white');
-    image(night, 1280, 20, 80, 30);
+    image(night, width-86, 20, 80, 30);
   }
   else if(dark == -1){
     background(255);
     tint('white');
-    image(day, 1280, 20, 80, 30);
+    image(day, width-86, 20, 80, 30);
   }
   if(startclicked == 0 && restartflag == 0){
     tint('red');
-    image(startbutton,570,370,startx,starty);
+    image(startbutton,xx+320,yy+350,startx,starty);
     tint('blue');
-    image(vsbutton,720,350,vsx,vsy);
+    image(vsbutton,xx+470,yy+300,vsx,vsy);
   }
   if(mute == -1){
     tint(127,255,212, 125);
-    image(music, 1300, 60, 50, 50);
+    image(music, width-66, 60, 50, 50);
   }else if(mute == 1){
     tint(200, 0 , 0, 180);
-    image(nomusic, 1300, 60, 50, 50);
+    image(nomusic, width-66, 60, 50, 50);
   }
   /*if(sfxflag == -1){
     tint(0, 153, 204, 126);
@@ -175,7 +150,10 @@ function draw() {
   }
   keypad();
   for (i = 0; i < touches.length; i++) {
-    if(touches[i].x > 683 && vsflag == 0){
+    if(touches[i].x > 150 + width/3 && touches[i].x < 390 + width/3 && touches[i].y > 380 + height/3 && touches[i].y < 450 + height/3 && (ball.sc1==5||ball.sc2==5)){
+      restart();
+    }
+    if(touches[i].x > width/2 && vsflag == 0){
       if(touches[i].y < 10+70){
         y2 = 10;
       }
@@ -186,7 +164,7 @@ function draw() {
         y2 = touches[i].y - 70;
       }
     }
-    else if(touches[i].x < 683){
+    else if(touches[i].x < width/2){
       if(touches[i].y < 10+70){
         y = 10;
       }
@@ -212,8 +190,13 @@ function draw() {
         }
         textFont(myfont);
         textSize(100);
-        text('you lose!',500, 200);
-        text('better luck next time...', 280, 400);
+        if(vsflag){
+          text('you lose!', 100 + width/3, height/3);
+          text('better luck next time...', width/4, 200 + height/3);
+        }
+        else if(startsflag){
+          text('Player 2 wins!', width/2 - 300, height/2);
+        }
       }else if(ball.sc1 == 5){
         if(dark == -1){
           fill(0);
@@ -222,13 +205,17 @@ function draw() {
         }
         textFont(myfont);
         textSize(100);
-        text('you win!',500, 200);
-        //text('better luck next time...', 280, 400);
+        if(vsflag){
+          text('you win!', width/2 - 200, height/2);
+        }
+        else if(startsflag){
+          text('Player 1 wins!', width/2 - 300, height/2);
+        }
       }
       textSize(30);
       textFont('default');
       fill('red');
-      text('Press Space or X', 560, 530);
+      text('Press Space or X', 150 + width/3, 400 + height/3);
       backsong.stop();
       restartflag = 1;
       startclicked = 1;
@@ -245,7 +232,44 @@ function restart(){
   plays.push(new Play());
 }
 
+function mouseClicked(){
+    var xx = xp*width;
+    var yy = yp*height;
+  if(mouseX > xx+320 && mouseX < xx+400 && mouseY > yy+350 && mouseY < yy+390 && startclicked == 0){
+    startclicked = 1;
+    vsclicked = 1;
+    vsstarts();
+  }
+  else if(mouseX > xx+470 && mouseX < xx+570 && mouseY > yy+300 && mouseY < yy+400 && vsclicked == 0){
+    startclicked = 1;
+    vsclicked = 1;
+    starts();
+  }
+  else if(mouseX > width-66 && mouseX < width-16 && mouseY > 60 && mouseY < 110){
+    mute *= -1;
+    if(mute == 1 && vsclicked == 1 && startclicked == 1){
+      backsong.stop();
+      sfxflag = 1;
+    }
+    else if(mute == -1 && vsclicked == 1 && startclicked == 1){
+     backsong.play();
+     sfxflag = -1;
+    }
+  }
+  else if(mouseX > width-86 && mouseX < width && mouseY > 20 && mouseY < 50){
+    dark *= -1;
+  }
+  //else if(mouseX > 1300 && mouseX < 1350 && mouseY > 100 && mouseY < 150){
+    //sfxflag *= -1;
+  //}
+  else if(mouseX > 150 + width/3 && mouseX < 390 + width/3 && mouseY > 380 + height/3 && mouseY < 450 + height/3 && (ball.sc1==5||ball.sc2==5)){
+    restart();
+  }
+}
+
 function keypad(){
+    var xx = xp*width;
+    var yy = yp*height;
    if(keyIsDown(87) && y > 10){ //key W
      y -= 10;
    }
@@ -258,12 +282,12 @@ function keypad(){
    else if(keyIsDown(98) && y2 < height-10-140 && vsflag == 0){ //key NUMPAD 2
      y2 += 10;
    }
-   if(((keyIsDown(37)) || (mouseX > 570 && mouseX < 650 && mouseY > 370 && mouseY < 480)) && startx < 96){
+   if(((keyIsDown(37)) || (mouseX > xx+320 && mouseX < xx+400 && mouseY > yy+350 && mouseY < yy+390)) && startx < 96){
      startx += 15;
      starty += 15;
      vsx = 100;
      vsy = 100;
-   }else if(((keyIsDown(39))||(mouseX > 720 && mouseX < 820 && mouseY > 350 && mouseY < 450)) && vsx < 116){
+   }else if(((keyIsDown(39))||(mouseX > xx+470 && mouseX < xx+570 && mouseY > yy+300 && mouseY < yy+400)) && vsx < 116){
      vsx += 15;
      vsy += 15;
      startx = 80;
@@ -277,7 +301,7 @@ function keypad(){
      startclicked = 1;
      vsclicked = 1;
      starts();
-   }else if((keyIsDown(32) ||keyIsDown(88))&& restartflag == 1){
+   }else if((keyIsDown(32) || keyIsDown(88)) && restartflag == 1){
      restart();
    }
 }
@@ -407,6 +431,7 @@ function gameLoop() {
 
 
 
+
 function Ball(){
   this.x = width/2;
   this.y = height/2 - 80;
@@ -430,15 +455,15 @@ function Ball(){
     textSize(75);
     textFont(myfont2);
     fill('red');
-    text(this.sc1, 575, 100);
+    text(this.sc1, width/2 - 108, 100);
     fill('blue');
-    text(this.sc2, 740, 100);
+    text(this.sc2, width/2 + 57, 100);
     if(dark == -1){
       fill(0);
     }else{
       fill(255);
     }
-    rect(665, 65, 30, 15);
+    rect(width/2 - 18, 65, 30, 15);
   };
   
   this.update = function(){
@@ -519,7 +544,7 @@ function Ball(){
     if(this.flag == 1){
       this.flag = 0;
       if(this.y < 10 + this.d/2){
-        this.ai = 1166 - int(random(0, 140)) - this.x;
+        this.ai = width-200 - int(random(0, 140)) - this.x;
         if(this.ai < 10){
           this.ai = 10;
         }
@@ -527,7 +552,8 @@ function Ball(){
           this.ai = height-10-140;
         }
       }else{
-        this.ai = this.x - 711 + int(random(0,140));
+        this.ai = height-(width-200  - this.x + int(random(70, 140)));
+        //this.ai = this.x - 695 - 140;
         if(this.ai < 10){
           this.ai = 10;
         }
@@ -537,7 +563,6 @@ function Ball(){
       }
       this.rand = int(random(0,100));
       this.rand2 = int(random(100,150));
-      console.log(this.rand);
       if(this.rand % 5 == 0 && this.speed > 7){
         if(this.ai + this.rand2 > height-10-140){
           this.ai -= this.rand2;
@@ -559,7 +584,7 @@ function Ball(){
   
   this.singleloc = function(){
     if(y2 > this.ai){
-      y2 -=10;
+      y2 -= 10;
     }
     else if(y2 < this.ai){
       y2 += 10;
@@ -570,44 +595,14 @@ function Ball(){
 
 
 
-function Play(){
-  this.display = function(){
-    fill(0, 255, 0);
-    noStroke();
-    circle(width/2, height/2 - 80, 40);
-    textSize(100);
-    textFont(myfont2);
-    fill('blue');
-    text("PING", 420, 248);
-    textSize(100);
-    fill('red');
-    text("PONG", 713, 248);
-    fill('red');
-    rect(390, 148, 10, 100);
-    fill('blue');
-    rect(1003, 148, 10, 100);
-    if(dark == -1){
-      fill(0);
-    }else{
-      fill(255);
-    }
-    textSize(15);
-    //textFont('default');
-    text("version 2.0",1030, 530);
-    rect(250, 50, 10, 500);
-    rect(250, 550, 910, 10);
-    rect(250, 50, 900, 10);
-    rect(1150, 50, 10, 500);
-    
-    rect(265, 70, 5, 470);
-    rect(320, 540, 825, 5);
-    rect(265, 65, 825, 5);
-    rect(1140, 70, 5, 475);
-  };
-}
-
-
-
+/*
+ * Gamepad API Test
+ * Written in 2013 by Ted Mielczarek <ted@mielczarek.org>
+ *
+ * To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
 var haveEvents = 'GamepadEvent' in window;
 var controllers = {};
 var rAF = window.mozRequestAnimationFrame ||
@@ -711,4 +706,54 @@ if (haveEvents) {
   window.addEventListener("gamepaddisconnected", disconnecthandler);
 } else {
   setInterval(scangamepads, 500);
+}
+
+
+
+function Play(){
+  this.display = function(){
+    var xx = xp*width;
+    var yy = yp*height;
+    fill(0, 255, 0);
+    noStroke();
+    circle(xx+433, yy+168, 40);
+    textSize(100);
+    textFont(myfont2);
+    fill('blue');
+    text("PING", xx+170, yy+198);
+    textSize(100);
+    fill('red');
+    text("PONG", xx+463, yy+198);
+    fill('red');
+    rect(xx+140, yy+98, 10, 100);
+    fill('blue');
+    rect(xx+753, yy+98, 10, 100);
+    if(dark == -1){
+      fill(0);
+    }else{
+      fill(255);
+    }
+    textSize(15);
+    //textFont('default');
+    text("version 2.0",xx+780, yy+480);
+   
+    rect(xx, yy, 10, 500);//l
+    rect(xx, yy+500, 910, 10);//d
+    rect(xx, yy, 900, 10);//u
+    rect(xx+900, yy, 10, 500);//r
+    
+    rect(xx+15, yy+20, 5, 470);
+    rect(xx+70, yy+490, 825, 5);
+    rect(xx+15, yy+15, 825, 5);
+    rect(xx+890, yy+20, 5, 475);
+    
+    text("INSTRUCTIONS:", 100, 30);
+    textFont('default');
+    text("1.Use 'W' and 'S' to move paddle in single player", 10, 70);
+    text("2.Use NUM8 and NUM2 for player 2 in multiplayer", 10, 90);
+    text("3.Everytime ball touches the paddle 3 times, speed is increased.", 10, 110);
+    text("4.The one who scores 5 points first, wins the game!", 10, 130);
+    textFont(myfont2);
+    text("Developed by: Wajahatulla Sharif", 20, height-20);
+  };
 }
